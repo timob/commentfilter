@@ -32,7 +32,10 @@ func NewCommentFilter(start, end, strLit, quote string, r io.Reader) *CommentFil
 	nextTokenType := ""
 
 	scanner.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
-		offset := len(nextTokenType)
+        if atEOF && len(data) == 0 {
+            return 0, nil, nil
+        }
+        offset := len(nextTokenType)
 		search := data[offset:]
 		filter.tokenType = nextTokenType
 		min := len(search)
